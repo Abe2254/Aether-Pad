@@ -70,12 +70,13 @@ app.use('/', authRoutes);
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+// 404 Handler
+app.get('*', (req, res) => {
+  res.status(404).render('404');
+});
+
 app._router.stack.forEach((route) => {
   if (route.route && route.route.path) {
     console.log(`✅ Registered Route: ${route.route.path}`);
   }
-});
-// 404 Handler
-app.get('*', (req, res) => {
-  res.status(404).render('404');
 });

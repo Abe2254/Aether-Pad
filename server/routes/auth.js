@@ -78,13 +78,6 @@ router.get(
     });
   }
 );
-router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    // Successful authentication, redirect to dashboard
-    res.redirect('/dashboard');
-  }
-);
 
 //Routes if something goes wrong
 router.get('/login-failure', (req, res) => {
