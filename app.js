@@ -9,7 +9,7 @@ const passport = require('passport');
 const MongoStore = require('connect-mongo');
 // const path = require('path');
 
-const mongoUri = process.env.MONGO_URI;
+const mongoUri = process.env.MONGODB_URI;
 if (!mongoUri) {
   console.error('Error: MONGO_URI environment variable is not set!');
   process.exit(1); // Exit the app if no MongoDB URI is provided
@@ -31,11 +31,11 @@ connectDB();
 // Session
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "Call of Duty",
+    secret:"Call of Duty",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
+      mongoUrl: process.env.MONGODB_URI,
     }),
     cookie: { maxAge: 3600000, secure: process.env.NODE_ENV === "production" ? true: false,
       httponly: true
