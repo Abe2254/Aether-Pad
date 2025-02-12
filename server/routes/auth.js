@@ -17,7 +17,7 @@ passport.use(
       passReqToCallback:true,
       scope: ['profile', 'email'],
     },
-    async function (accessToken, refreshToken, profile, done) {
+    async function (request,accessToken, refreshToken, profile, done) {
       try {
         // Debugging: Log full profile data
         console.log('Google Profile Data:', profile);
