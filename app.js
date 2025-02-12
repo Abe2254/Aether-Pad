@@ -17,6 +17,7 @@ if (!mongoUri) {
 
 const app = express();
 const port = process.env.PORT || 8000;
+const authRoutes = require('./server/routes/auth'); // Correct path
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -31,19 +32,22 @@ connectDB();
 // Session
 app.use(
   session({
-    secret:process.env.SESSION_SECRET || "Call of Duty",
+    secret: process.env.SESSION_SECRET || 'Call of Duty',
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
     }),
-    cookie: { maxAge: 3600000, secure: process.env.NODE_ENV === 'production', // Set true for HTTPS
-      sameSite: 'lax'},
+    cookie: {
+      maxAge: 3600000,
+      secure: process.env.NODE_ENV === 'production', // Set true for HTTPS
+      sameSite: 'lax',
+    },
   })
 );
 
 app.use((req, res, next) => {
-  console.log("🔍 Session Before Request:", req.session);
+  console.log('🔍 Session Before Request:', req.session);
   next();
 });
 
@@ -60,13 +64,18 @@ app.set('view engine', 'ejs');
 app.use('/', require('./server/routes/index'));
 app.use('/', require('./server/routes/auth'));
 app.use('/', require('./server/routes/dashboard'));
-
-// 404 Handler
-app.get('*', (req, res) => {
-  res.status(404).render('404');
-});
+app.use('/', authRoutes);
 
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+});
+app._router.stack.forEach((route) => {
+  if (route.route && route.route.path) {
+    console.log(`✅ Registered Route: ${route.route.path}`);
+  }
+});
+// 404 Handler
+app.get('*', (req, res) => {
+  res.status(404).render('404');
 });
