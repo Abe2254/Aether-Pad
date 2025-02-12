@@ -31,7 +31,7 @@ connectDB();
 // Session
 app.use(
   session({
-    secret:"Call of Duty",
+    secret:process.env.SESSION_SECRET || "Call of Duty",
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
