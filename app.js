@@ -28,7 +28,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Database connection
 connectDB();
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 // Session
 app.use(
   session({
@@ -54,7 +54,11 @@ app.use((req, res, next) => {
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use((req, res, next) => {
+  console.log('🔍 Session Data:', req.session);
+  console.log('🔍 User Data:', req.user);
+  next();
+});
 // Templating
 app.use(expressLayouts);
 app.set('layout', './layouts/main');
@@ -64,7 +68,7 @@ app.set('view engine', 'ejs');
 app.use('/', require('./server/routes/index'));
 app.use('/', require('./server/routes/auth'));
 app.use('/', require('./server/routes/dashboard'));
-app.use('/', authRoutes);
+
 
 // Start server
 app.listen(port, () => {
