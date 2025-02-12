@@ -90,10 +90,11 @@ The following dependencies are used in Aether Pad:
 Create a `.env` file in the root directory with the following keys:
 
 ```env
-MONGO_URI
+MONGODB_URI
 GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET
 GOOGLE_CALLBACK_URL
+NODE_ENV
 ```
 
 ---
