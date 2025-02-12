@@ -54,20 +54,29 @@ passport.use(
 );
 
 //Google Login Route
+// Step 1: Google Auth Route (Triggers Login)
 router.get(
   '/auth/google/',
   passport.authenticate('google', { 
     scope: ['profile', 'email'], 
-    prompt: 'select_account' // 👈 This forces Google to show the account selection screen
+    prompt: 'select_account' // Forces Google to show account selection
   })
 );
 
-
-router.get('/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/login-failure',
-    successRedirect: '/dashboard',
-  })
+// Step 3: Handle Google Callback & Force Session Save
+router.get(
+  '/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }), // Redirect to home if failed
+  (req, res) => {
+    console.log("✅ Login Successful - User Authenticated:", req.user);
+    
+    req.session.save(err => {
+      if (err) {
+        console.log("❌ Session Save Error:", err);
+      }
+      res.redirect('/dashboard'); // Redirect to dashboard after login
+    });
+  }
 );
 
 //Routes if something goes wrong
