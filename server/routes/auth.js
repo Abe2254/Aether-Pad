@@ -55,7 +55,7 @@ passport.use(
 
 //Google Login Route
 router.get(
-  '/auth/google',
+  '/auth/google/',
   passport.authenticate('google', { 
     scope: ['profile', 'email'], 
     prompt: 'select_account' // 👈 This forces Google to show the account selection screen
